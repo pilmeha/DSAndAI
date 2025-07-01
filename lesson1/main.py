@@ -1,28 +1,60 @@
 import torch
+import numpy as np
 
-# Арифметика с одинаковыми шейпами
-A = torch.tensor([[1, 2], [3, 4]], dtype=torch.float32)
-B = torch.tensor([[10, 20], [30, 40]], dtype=torch.float32)
-print(f'A = {A}')
-print(f'B = {B}')
-print(f'A + B = {A + B}')
-print(f'A - B = {A - B}')
-print(f'A * B = {A * B}')
-print(f'A / B = {A / B}')
-print(f'A ** 2 = {A ** 2}')
-print(f'torch.pow(A, 3) = {torch.pow(A, 3)}')
-print(f'torch.sqrt(B) = {torch.sqrt(B)}')
-print(f'torch.exp(A) = {torch.exp(A)}')
-print(f'torch.log(B) = {torch.log(B)}')
+x = torch.arange(12)
+print(f'x: {x}')
 
-# Матричное умножение
-O = torch.tensor([[1, 2], [3, 4]], dtype=torch.float32)
-P = torch.tensor([[2, 0], [0, 2]], dtype=torch.float32)
-print(f'O @ P = {O @ P}')
-print(f'torch.matmul(O, P) = {torch.matmul(O, P)}')
+# view и reshape
+x2 = x.view(3, 4)
+print(f'view (3,4): {x2}')
 
-# Batch матричное умножение
-Q = torch.randn(10, 3, 4)
-R = torch.randn(10, 4, 5)
-print(f'Q.shape = {Q.shape}, R.shape = {R.shape}')
-print(f'batch matmul: torch.matmul(Q, R).shape = {torch.matmul(Q, R).shape}') 
+x3 = x.reshape(2, 6)
+print(f'reshape (2,6): {x3}')
+
+# squeeze и unsqueeze
+x4 = torch.zeros(1, 2, 1, 3)
+print(f'x4: {x4.shape}')
+print(f'squeeze: {x4.squeeze().shape}')
+print(f'unsqueeze: {x4.unsqueeze(0).shape}')
+
+# permute и transpose
+x5 = torch.randn(2, 3, 4)
+print(f'x5: {x5.shape}')
+print(f'permute (2,0,1): {x5.permute(2, 0, 1).shape}')
+print(f'transpose (1,2): {x5.transpose(1, 2).shape}')
+
+# contiguous
+x6 = x5.transpose(1, 2)
+print(f'is contiguous: {x6.is_contiguous()}')
+x6c = x6.contiguous()
+print(f'contiguous: {x6c.is_contiguous()}')
+
+# to (смена устройства/типа)
+x7 = x2.to(dtype=torch.float32)
+print(f'to float32: {x7}')
+
+x8 = x7.to(torch.int64)
+print(f'to int64: {x8}')
+
+x9 = x7.type(torch.complex64)
+print(f'type(torch.complex64): {x9}')
+
+x10 = x7.float()
+print(f'float(): {x10}')
+
+x11 = x7.long()
+print(f'long(): {x11}')
+
+if torch.cuda.is_available():
+    x_cuda = x7.to('cuda')
+    print(f'to cuda: {x_cuda}')
+    x_cpu = x_cuda.to('cpu')
+    print(f'to cpu: {x_cpu}')
+
+# numpy
+x_np = x7.numpy()
+print(f'numpy: {x_np}, {type(x_np)}')
+
+# из numpy обратно в torch
+y = torch.from_numpy(x_np)
+print(f'from numpy: {y}') 
