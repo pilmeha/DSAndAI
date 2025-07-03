@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from utils import make_regression_data, CustomDataset, log_epoch
+from utils import make_regression_data, RegressionDataset, log_epoch
 
 class LinearRegressionTorch(torch.nn.Module):
     def __init__(self, in_features):
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     EPOCHS = 100
 
     X, y =  make_regression_data(10000)
-    dataset = CustomDataset(X, y)
+    dataset = RegressionDataset(X, y)
     dataloader = DataLoader(
         dataset,
         batch_size=128,
