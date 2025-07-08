@@ -14,7 +14,7 @@ def plot_training_history(history):
     ax2.set_title('Accuracy')
     ax2.legend()
 
-    plt.tight_layout()a
+    plt.tight_layout()
     plt.show()
     
 def count_parameters(model):

@@ -32,11 +32,32 @@ class SimpleCNN(nn.Module):
         self.conv1 = nn.Conv2d(input_channels, 32, 3, 1, 1)
         self.covn2 = nn.Conv2d(32, 64, 3, 1, 4)
         self.pool = nn.MaxPool2d(2, 2)
+        self.fc1 = nn.Linear(64 * 7 * 7, 128)
+        self.fc2 = nn.Linear(128, num_classes)
+        self.dropout = nn.Dropout(0.25)
 
-class CNNwithResidual(nn.Module):
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(x.size(0), -1)
+        x = F.relu(self.fc1(x))
+        x = self.dropout(x)
+        x = self.fc2(x)
+        return x
+
+class CNNWithResidual(nn.Module):
     def __init__(self, input_channels=1, num_classes=10):
         super().__init__()
-        self.__init__
+        self.__init__()
+        self.conv1 = nn.Conv2d(input_channels, 32, 3, 1, 1)
+        self.bn1 = nn.BatchNorm2d(32)
+
+        self.res1 = ResidualBlock(32, 32)
+        self.res2 = ResidualBlock(32, 64, 2)
+        self.res3 = ResidualBlock(64, 64)
+
+        self.pool = nn.AdaptiveAvgPool2d((4, 4))
+        self.fc = nn.Linear(64 * 4 * 4, num_classes)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
@@ -65,7 +86,7 @@ class CIFARCNN(nn.Module):
         x = self.pool(F.relu(self.conv3(x)))
         x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
-        x = 
+        x = self.dropout(x)
         x = self.fc2(x)
         return x
         
