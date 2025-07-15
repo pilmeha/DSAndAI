@@ -8,7 +8,7 @@ from extra_augs import (AddGaussianNoise, RandomErasingCustom, CutOut,
 
 
 # Загрузка датасета без аугментаций
-root = "C:\\Users\\garma\\DSAndAI\\lesson5\\data\\test"
+root = "C:\\Users\\garma\\DSAndAI\\lesson5\\data\\train"
 dataset = CustomImageDataset(root, transform=None, target_size=(224, 224))
 
 # Берем одно изображение для демонстрации
