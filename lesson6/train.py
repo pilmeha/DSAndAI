@@ -163,8 +163,8 @@ def main():
         vocab_size=dataset.get_vocab_size(),
         pad_index=dataset.get_pad_token_id(),
         dropout=config['dropout'],
-        tokenizer=dataset.tokenizer,
         max_len=config['max_length'],
+        tokenizer=dataset.tokenizer,
     )
     
     print(f'Model parameters: {sum(p.numel() for p in model.parameters()):,}')
